@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Unauthorized</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <script>
+        // Set the countdown time in seconds
+        var timeLeft = 5;
+
+        function updateCountdown() {
+            // Update the countdown display
+            document.getElementById('countdown').innerText = "Redirecting in " + timeLeft + " seconds.";
+
+            // Decrease the time left
+            timeLeft--;
+
+            // When the countdown is finished, redirect to the login page
+            if (timeLeft < 0) {
+                window.location.href = "{{ url_for('auth.login') }}";
+            } else {
+                // Continue the countdown
+                setTimeout(updateCountdown, 1000);
+            }
+        }
+
+        // Start the countdown
+        window.onload = updateCountdown;
+    </script>
+</head>
+<body>
+<div class="container">
+    <h1>Unauthorized Access</h1>
+    <p>You are not authorized to view the requested page.</p>
+    <p id="countdown">Redirecting in 5 seconds.</p>
+    <p>If you are not redirected, <a href="{{ url_for('auth.login') }}">click here to login</a>.</p>
+</div>
+</body>
+</html>

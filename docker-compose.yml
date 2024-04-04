@@ -1,0 +1,31 @@
+version: '3.8'
+services:
+  db:
+    image: postgres:13
+    environment:
+      POSTGRES_USER: recipe_app_user
+      POSTGRES_PASSWORD: recipeAppPwd
+      POSTGRES_DB: recipe_app
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    command: flask run --host=0.0.0.0 --port=8000
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      FLASK_APP: run.py
+      POSTGRES_USER: recipe_app_user
+      POSTGRES_PASSWORD: recipeAppPwd
+      POSTGRES_DB: recipe_app
+      POSTGRES_HOST: db  # Notice the hostname is the same as the service name for PostgreSQL
+      POSTGRES_PORT: 5432
+
+volumes:
+  postgres_data:

@@ -1,0 +1,119 @@
+{% extends "base.html" %}
+
+{% block title %}Recipes{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <div class="col s10">
+                        {% for crumb in breadcrumbs %}
+                            <a href="{{ crumb.url }}" class="breadcrumb">{{ crumb.text }}</a>
+                        {% endfor %}
+                    </div>
+                    <div class="col s2 right-align">
+                        <a class="waves-effect waves-light btn red lighten-5" href="{{ url_for('auth.logout') }}">
+                            <span style="color: black">Logout</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+
+        <h2 class="row col s12">
+            <div class="col s3">Recipes</div>
+            <div class="col s7">
+                <div class="row">
+                    <form class="col s12" method="get" action="{{ url_for('recipe.view_recipes') }}">
+                        <div class="row">
+                            <div class="input-field col s12">
+                                <i class="material-icons prefix">search</i>
+                                <input id="search" type="search" required placeholder="Search recipes or ingredients"
+                                       aria-label="Search" name="search" value="{{ search_term }}">
+                                <i class="material-icons" id="clear-search">close</i>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <span class="col s2 right-align"><a href="{{ url_for('recipe.add_recipe') }}" class="btn btn-success">Add Recipe</a></span>
+        </h2>
+        {% for recipe in recipes %}
+            <div class="row">
+                <div class="col s12">
+                    <div class="card blue lighten-5">
+                        <div class="card-content">
+                            <a href="{{ url_for('recipe.view_recipe', id=recipe.id) }}">
+                                <span class="card-title">{{ recipe.title }}</span>
+                                <p>{{ recipe.description }}</p>
+                            </a>
+                        </div>
+                        <div class="card-action">
+                            <a class="waves-effect waves-light btn col s1"
+                               href="{{ url_for('recipe.edit_recipe', id=recipe.id) }}">Edit</a>
+                            <span class="col s1"></span>
+                            <form action="{{ url_for('recipe.delete_recipe', id=recipe.id) }}" method="POST"
+                                  class="d-inline">
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <p>No recipes found.</p>
+        {% endfor %}
+
+        {% if pagination.total > 0 %}
+            <div class="col s12">
+                <ul class="pagination">
+                    {% if pagination.has_prev %}
+                        <li class="waves-effect">
+                            <a class="page-link"
+                               href="{{ url_for('recipe.view_recipes', page=pagination.prev_num, search=search_term) }}">
+                                <i class="material-icons">chevron_left</i>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
+                    {% endif %}
+
+                    {% for page_num in pagination.iter_pages() %}
+                        <li class="{% if page_num == pagination.page %}active{% endif %}">
+                            <a class="page-link"
+                               href="{{ url_for('recipe.view_recipes', page=page_num, search=search_term) }}">
+                                {{ page_num }}
+                            </a>
+                        </li>
+                    {% endfor %}
+
+                    {% if pagination.has_next %}
+                        <li class="waves-effect">
+                            <a class="page-link"
+                               href="{{ url_for('recipe.view_recipes', page=pagination.next_num, search=search_term) }}">
+                                <i class="material-icons">chevron_right</i>
+                            </a>
+                        </li>
+                    {% else %}
+                        <li class="disabled"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var clearSearchIcon = document.getElementById('clear-search');
+            clearSearchIcon.addEventListener('click', function () {
+                var searchInput = document.getElementById('search');
+                searchInput.value = ''; // Clear the search input
+                searchInput.form.submit(); // Submit the form
+            });
+        });
+    </script>
+{% endblock %}

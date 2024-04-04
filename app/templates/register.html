@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Register{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <div class="col s10">
+                        {% for crumb in breadcrumbs %}
+                            <a href="{{ crumb.url }}" class="breadcrumb">{{ crumb.text }}</a>
+                        {% endfor %}
+                    </div>
+                    <div class="col s2 right-align">
+                        <a class="waves-effect waves-light btn red lighten-5" href="{{ url_for('auth.login') }}">
+                            <span style="color: black">Login</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </nav>
+        <h4 style="color: #ef9a9a">Register Form</h4>
+        <form id="registerForm" method="POST" action="" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+                {{ form.username.label }}
+                {{ form.username(class="form-control") }}
+                <div id="usernameFeedback" class="invalid-feedback"></div>
+            </div>
+            <div class="mb-3">
+                {{ form.password.label }}
+                {{ form.password(class="form-control") }}
+                <div id="passwordFeedback" class="invalid-feedback"></div>
+            </div>
+            <div class="mb-3">
+                {{ form.confirm.label }}
+                {{ form.confirm(class="form-control") }}
+                <div id="confirmFeedback" class="invalid-feedback"></div>
+            </div>
+            <button type="submit" class="btn btn-primary">Register</button>
+        </form>
+    </div>
+{% endblock %}

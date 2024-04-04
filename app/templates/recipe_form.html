@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="row">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <div class="col s10">
+                        {% for crumb in breadcrumbs %}
+                            <a href="{{ crumb.url }}" class="breadcrumb">{{ crumb.text }}</a>
+                        {% endfor %}
+                    </div>
+                    <div class="col s2 right-align">
+                        <a class="waves-effect waves-light btn red lighten-5" href="{{ url_for('auth.logout') }}">
+                            <span style="color: black">Logout</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+        <h4 style="color: #ef9a9a">{{ form_metadata.title }}</h4>
+        <form method="POST" action="">
+            {{ form.hidden_tag() }}
+            <div class="input-field col s12">
+                {{ form.title.label }}
+                {{ form.title(class="form-control") }}
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    {{ form.description.label }}
+                    {{ form.description }}
+                </div>
+            </div>
+
+            <h5>Ingredients</h5>
+            <div id="ingredients" class="row">
+                {% for ingredient in form.ingredients %}
+                    <div class="row ingredients">
+                        <div class="input-field col s12 m6 l4">
+                            <div class="ingredient">
+                                {{ ingredient.title.label }}
+                                {{ ingredient.title }}
+                            </div>
+                        </div>
+                        <div class="input-field col s12 m6 l4">
+                            <div class="ingredient">
+                                {{ ingredient.quantity.label }}
+                                {{ ingredient.quantity }}
+                            </div>
+                        </div>
+                        <div class="input-field col s12 m6 l3">
+                            <div class="ingredient">
+                                {{ ingredient.measurement_type.label }}
+                                {{ ingredient.measurement_type }}
+                            </div>
+                        </div>
+                        <div style="padding-top: 30px;">
+                            <i class="input-field col s12 m6 l1 material-icons delete-ingredient"
+                               style="cursor: pointer; {% if loop.length == 1 %}display: none;{% endif %}">delete</i>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="col s12 right-align">
+                <button class="btn waves-effect waves-light" type="button" id="addIngredient">Add Ingredient
+                    <i class="material-icons right">local_drink</i>
+                </button>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    {{ form.instructions.label }}
+                    {{ form.instructions }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">{{ form_metadata.submit_text }}</button>
+        </form>
+    </div>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script>
+        // JavaScript to dynamically add new ingredient fields
+        document.getElementById('addIngredient').addEventListener('click', function () {
+            var newIndex = document.querySelectorAll('.ingredients').length;
+
+            // Clone existing ingredient row
+            var ingredientRow = document.querySelector('.ingredients').cloneNode(true);
+
+            // Append the cloned row with unique IDs
+            ingredientRow.querySelectorAll('input').forEach(function (input) {
+                var newId = input.id.replace('-0-', `-${newIndex}-`);
+                input.id = newId;
+                input.name = newId;
+                input.value = ""; // Clear input value
+            });
+
+            var deleteButton = ingredientRow.querySelector('.delete-ingredient');
+            deleteButton.style.display = 'inline-block'; // Show delete button
+
+            // Enable delete button for the first ingredient row
+            if (newIndex >= 1) {
+                var deleteButton = document.querySelector('.delete-ingredient');
+                deleteButton.style.display = 'inline-block'; // Show delete button
+            }
+
+            document.getElementById('ingredients').appendChild(ingredientRow);
+        });
+
+        // JavaScript to remove ingredient row when delete button is clicked
+        document.addEventListener('click', function (event) {
+            if (event.target.classList.contains('delete-ingredient')) {
+                var rowToDelete = event.target.closest('.ingredients');
+                rowToDelete.remove();
+
+                // Enable delete button for the first remaining ingredient row
+                var remainingRows = document.querySelectorAll('.ingredients');
+                if (remainingRows.length === 1) {
+                    var deleteButton = remainingRows[0].querySelector('.delete-ingredient');
+                    deleteButton.style.display = 'none'; // Hide delete button
+                }
+            }
+        });
+    </script>
+{% endblock %}

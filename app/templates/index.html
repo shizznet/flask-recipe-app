@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Recipes{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <div class="col {% if is_logged_in %}s10{% else %}s8{% endif %}">
+                        {% for crumb in breadcrumbs %}
+                            <a href="{{ crumb.url }}" class="breadcrumb">{{ crumb.text }}</a>
+                        {% endfor %}
+                    </div>
+                    {% if is_logged_in %}
+                        <div class="col s2 right-align">
+                            <a class="waves-effect waves-light btn red lighten-5" href="{{ url_for('auth.logout') }}">
+                                <span style="color: black">Logout</span>
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="col s2 right-align">
+                            <a class="waves-effect waves-light btn red lighten-5" href="{{ url_for('auth.login') }}">
+                                <span style="color: black">Login</span>
+                            </a>
+                        </div>
+                        <div class="col s1 right-align">
+                            <a class="waves-effect waves-light btn red lighten-5" href="{{ url_for('auth.register') }}">
+                                <span style="color: black">Register</span>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </nav>
+
+        <h2>Welcome</h2>
+        {% if is_logged_in %}
+            <div class="row">
+                <a class="waves-effect waves-light btn" href="{{ url_for('recipe.add_recipe') }}">
+                    <i class="material-icons left">verified_user</i>Add Recipe
+                </a>
+                <a class="waves-effect waves-light btn" href="{{ url_for('recipe.view_recipes') }}">
+                    <i class="material-icons left">import_contacts</i>View Recipes
+                </a>
+            </div>
+        {% else %}
+            <p>A feature-rich web application which allow users to add, edit and delete their favorite recipes.</p>
+        {% endif %}
+    </div>
+{% endblock %}

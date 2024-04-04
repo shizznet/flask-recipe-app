@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "flask-recipe-app"
+version = "0.1.0"
+description = ""
+authors = ["Harshad <harshad.pawar87@gmail.com>"]
+readme = "README.md"
+packages = [{include = "flask_recipe_app"}]
+
+[tool.poetry.dependencies]
+python = "^3.10 || ^3.11"
+flask = "^3.0.2"
+flask-login = "^0.6.3"
+flask-sqlalchemy = "^3.1.1"
+flask-migrate = "^4.0.7"
+psycopg2 = "^2.9.9"
+psycopg2-binary = "^2.9.9"
+werkzeug = "^3.0.2"
+flask-wtf = "^1.2.1"
+flask-testing = "^0.8.1"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.1.1"
+beautifulsoup4 = "^4.12.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

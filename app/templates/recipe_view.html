@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}{{ recipe.title }}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <nav>
+            <div class="nav-wrapper">
+                <div class="col s12">
+                    <div class="col s10">
+                        {% for crumb in breadcrumbs %}
+                            <a href="{{ crumb.url }}" class="breadcrumb">{{ crumb.text }}</a>
+                        {% endfor %}
+                    </div>
+                    <div class="col s2 right-align">
+                        <a class="waves-effect waves-light btn red lighten-5" href="{{ url_for('auth.logout') }}">
+                            <span style="color: black">Logout</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </nav>
+        <div class="card row">
+            <h3 class="col s12">
+                <span class="col s11">{{ recipe.title }}</span>
+                <span class="col s1">
+                    <a class="waves-effect waves-teal btn-flat" href="{{ url_for('recipe.edit_recipe', id=recipe.id) }}" style="font-weight: bold; color: #b71c1c;">Edit</a>
+                </span>
+            </h3>
+            <div class="col s12">
+                <span class="col s2"><h5>Description:</h5></span>
+                <div class="card-body col s9" style="padding-top: 5px;">
+                    <p>{{ recipe.description }}</p>
+                </div>
+            </div>
+            <span class="col s1"></span>
+            <table class="responsive-table highlight col s10">
+                <thead>
+                <tr>
+                    <th>Ingredient</th>
+                    <th>Measurement</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for ingredient in recipe.ingredients %}
+                    <tr>
+                        <td>{{ ingredient.title }}</td>
+                        <td>{{ ingredient.quantity }} {{ ingredient.measurement_type }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <span class="col s1"></span>
+
+            <div class="col s12">
+                <span class="col s2"><h5>Instructions:</h5></span>
+                <div class="card-body col s9" style="padding-top: 5px;">
+                    <p>{{ recipe.instructions }}</p>
+                </div>
+            </div>
+
+            <div class="col s12 right-align">
+                <a href="{{ url_for('recipe.view_recipes') }}" class="btn btn-primary">Back to Recipes</a>
+            </div>
+            <span class="col s12">&nbsp;</span>
+        </div>
+    </div>
+{% endblock %}
