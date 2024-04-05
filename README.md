@@ -9,13 +9,16 @@
   - Start a terminal
   - Install poetry using `brew install poetry`
 
-## Running the application
+## Configuring the application
 
 - Start a terminal
 - Navigate to the `flask-recipe-app` directory
 - Install the packages using `poetry install`
-- Then run `poetry run flask run`
-- Note: You need a local Postgres database instance running
+- Then run `poetry add <package-name>` to add packages
+
+## Working with Docker
+
+- To run the application, from the root directory just type `docker-compose up --build`.
 
 ### First Migration
 
@@ -23,9 +26,8 @@
 - Run the first migration with `docker exec -it <your-container-name> poetry run flask db upgrade`.
   - Subsequent migrations after models changes can be run with `docker exec -it <your-container-name> poetry run flask db migrate -m "subsequent migrations"`.
 
-## Working with Docker
-
-- To run the applcation, from the root directory just type `docker-compose up`
+### Running tests
+- make sure all test files are places in "tests" folder in your application root directory 
 - To run tests, run `docker exec -it <your-container-name> poetry run pytest`
 
 ## Utilising the tools
