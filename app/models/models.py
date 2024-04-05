@@ -4,7 +4,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from app import db
 
 
-class User(UserMixin, db.Model):
+class User(UserMixin, db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(64), unique=True, index=True)
     password_hash = db.Column(db.String(255))
@@ -19,7 +19,7 @@ class User(UserMixin, db.Model):
         return check_password_hash(self.password_hash, password)
 
 
-class Ingredient(db.Model):
+class Ingredient(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     quantity = db.Column(db.String(50), nullable=False)
@@ -34,7 +34,7 @@ class Ingredient(db.Model):
         )
 
 
-class Recipe(db.Model):
+class Recipe(db.Model):  # type: ignore
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     description = db.Column(db.Text, nullable=False)

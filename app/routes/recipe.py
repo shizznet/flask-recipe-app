@@ -137,7 +137,6 @@ def add_recipe():
             recipe.ingredients.append(ingredient)
         db.session.add(recipe)
         db.session.commit()
-        flash("Recipe added successfully!", "success")
         return redirect(url_for(VIEW_RECIPES))
     return render_template(
         "recipe_form.html",
@@ -212,12 +211,10 @@ def edit_recipe(id):
 def delete_recipe(id):
     recipe = models.Recipe.query.get_or_404(id)
     if recipe.author != current_user:
-        flash("You do not have permission to delete this recipe.")
         return redirect(url_for(VIEW_RECIPES))
     try:
         db.session.delete(recipe)
         db.session.commit()
-        flash("Your recipe has been deleted.")
     except Exception as e:
         db.session.rollback()  # Roll back the transaction if an error occurs
         # flash("An error occurred while deleting the recipe.")
