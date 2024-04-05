@@ -18,11 +18,12 @@
 
 ## Working with Docker
 
-- To run the application, from the root directory just type `docker-compose up --build`.
+- Check the environment variables in `docker-compose.yml`.
+- Make sure all the config variables are in place in `config.py`.
+- To run the application, from the root directory run the following command `docker-compose up --build`.
 
 ### First Migration
 
-- You need a postgres server up and running with the right credentials. The fastest way is to run the Docker postgres database
 - Run the first migration with `docker exec -it <your-container-name> poetry run flask db upgrade`.
   - Subsequent migrations after models changes can be run with `docker exec -it <your-container-name> poetry run flask db migrate -m "subsequent migrations"`.
 
@@ -49,7 +50,7 @@
   - Follow the below steps to setup and run SonarQube
     1. Pull and run the SonarQube Docker image:
        - `docker run -d --name sonarqube -p 9000:9000 sonarqube`. 
-       - Access SonarQube at http://localhost:9000. The default credentials are admin/admin.
+       - Access SonarQube at http://localhost:9000 or http://0.0.0.0:9000 whichever works. The default credentials are admin/admin.
     2. Configure SonarQube for Python Analysis:
        - After logging in, if the project is not created it will ask for creation, please select "Create a local project". 
        - Enter project details by adding "Project Diplay Name" and hit "Next". 
