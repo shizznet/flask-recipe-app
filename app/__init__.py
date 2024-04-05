@@ -2,6 +2,7 @@ from flask import Flask, flash, redirect, render_template, url_for
 from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import CSRFProtect
 
 import config
 
@@ -11,6 +12,8 @@ login_manager = LoginManager()
 
 def create_app(config_class=config.DevelopmentConfig):
     app = Flask(__name__, static_url_path="/static")
+    csrf = CSRFProtect()
+    csrf.init_app(app)
 
     app.config.from_object(config_class)
 
