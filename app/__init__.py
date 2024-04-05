@@ -1,7 +1,7 @@
-from flask import Flask, flash, redirect, url_for, render_template, session
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import current_user, LoginManager
+from flask import Flask, flash, redirect, render_template, url_for
+from flask_login import LoginManager, current_user
 from flask_migrate import Migrate
+from flask_sqlalchemy import SQLAlchemy
 
 import config
 
@@ -10,7 +10,7 @@ login_manager = LoginManager()
 
 
 def create_app(config_class=config.DevelopmentConfig):
-    app = Flask(__name__, static_url_path='/static')
+    app = Flask(__name__, static_url_path="/static")
 
     app.config.from_object(config_class)
 
@@ -32,12 +32,12 @@ def create_app(config_class=config.DevelopmentConfig):
     @login_manager.unauthorized_handler
     def unauthorized():
         # Flash a message to the user
-        flash('You must be logged in to view that page.')
-        return redirect(url_for('unauthorized_access'))
+        flash("You must be logged in to view that page.")
+        return redirect(url_for("unauthorized_access"))
 
-    @app.route('/unauthorized')
+    @app.route("/unauthorized")
     def unauthorized_access():
-        return render_template('unauthorized.html'), 401
+        return render_template("unauthorized.html"), 401
 
     @app.context_processor
     def inject_user_status():
