@@ -47,7 +47,7 @@ def test_login_page(test_client):
     """
     Test that login page is accessible without login.
     """
-    response = test_client.get(url_for("auth.login"))
+    response = test_client.get(url_for(config.AUTH_LOGIN))
     assert response.status_code == 200
 
 
@@ -55,9 +55,9 @@ def test_login(test_client, user_setup):
     """
     Test logging in with correct credentials redirects to the profile page.
     """
-    print(url_for("auth.login"))
+    print(url_for(config.AUTH_LOGIN))
     response = test_client.post(
-        url_for("auth.login"),
+        url_for(config.AUTH_LOGIN),
         data={"username": "testuser", "password": "testpassword"},
         follow_redirects=True,
     )

@@ -5,6 +5,7 @@ from wtforms import PasswordField, StringField, validators
 
 from app import db
 from app.models import models
+from config import AUTH_LOGIN
 
 
 def generate_breadcrumbs():
@@ -55,11 +56,7 @@ def register():
         db.session.add(user)
         db.session.commit()
         flash("Congratulations, you are now a registered user!")
-        return "Registration succesfull"
-        return redirect(url_for("auth.login"))
-    else:
-        return form.errors
-    return "Register Get PAGe"
+        return redirect(url_for(AUTH_LOGIN))
     return render_template("register.html", form=form, breadcrumbs=breadcrumbs)
 
 
@@ -71,7 +68,7 @@ def login():
         user = models.User.query.filter_by(username=form.username.data).first()
         if user is None or not user.check_password(form.password.data):
             flash("Invalid username or password")
-            return redirect(url_for("auth.login"))
+            return redirect(url_for(AUTH_LOGIN))
         login_user(user)
         return redirect(url_for("recipe.view_recipes"))
     return render_template("login.html", form=form, breadcrumbs=breadcrumbs)
@@ -81,4 +78,4 @@ def login():
 @login_required
 def logout():
     logout_user()
-    return redirect(url_for("auth.login"))
+    return redirect(url_for(AUTH_LOGIN))

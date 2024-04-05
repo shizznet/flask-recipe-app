@@ -2,6 +2,9 @@ import os
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+AUTH_LOGIN = "auth.login"
+VIEW_RECIPES = "recipe.view_recipes"
+
 
 class Config(object):
     SECRET_KEY = (

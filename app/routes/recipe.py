@@ -10,6 +10,7 @@ from wtforms.validators import DataRequired
 
 from app import db
 from app.models import models
+from config import VIEW_RECIPES
 
 
 class IngredientForm(FlaskForm):
@@ -134,7 +135,7 @@ def add_recipe():
         db.session.add(recipe)
         db.session.commit()
         flash("Recipe added successfully!", "success")
-        return redirect(url_for("recipe.view_recipes"))
+        return redirect(url_for(VIEW_RECIPES))
     return render_template(
         "recipe_form.html",
         form=form,
@@ -150,7 +151,7 @@ def edit_recipe(id):
     recipe = models.Recipe.query.get_or_404(id)
     if recipe.author != current_user:
         flash("You do not have permission to edit this recipe.")
-        return redirect(url_for("recipe.view_recipes"))
+        return redirect(url_for(VIEW_RECIPES))
     form = RecipeForm(obj=recipe)
 
     form_metadata = {
@@ -188,7 +189,7 @@ def edit_recipe(id):
 
             db.session.commit()
             flash("Your recipe has been updated.")
-            return redirect(url_for("recipe.view_recipes"))
+            return redirect(url_for(VIEW_RECIPES))
         except Exception as e:
             db.session.rollback()  # Roll back the transaction
             flash("An error occurred while updating the recipe.")
@@ -209,7 +210,7 @@ def delete_recipe(id):
     recipe = models.Recipe.query.get_or_404(id)
     if recipe.author != current_user:
         flash("You do not have permission to delete this recipe.")
-        return redirect(url_for("recipe.view_recipes"))
+        return redirect(url_for(VIEW_RECIPES))
     try:
         db.session.delete(recipe)
         db.session.commit()
@@ -219,7 +220,7 @@ def delete_recipe(id):
         # flash("An error occurred while deleting the recipe.")
         # Log the error or handle it appropriately
         print(e)
-    return redirect(url_for("recipe.view_recipes"))
+    return redirect(url_for(VIEW_RECIPES))
 
 
 @bp.route("/recipe/<int:id>", methods=["GET"])
@@ -229,5 +230,5 @@ def view_recipe(id):
     recipe = models.Recipe.query.get_or_404(id)
     if recipe.author != current_user:
         flash("You do not have permission to delete this recipe.")
-        return redirect(url_for("recipe.view_recipes"))
+        return redirect(url_for(VIEW_RECIPES))
     return render_template("recipe_view.html", recipe=recipe, breadcrumbs=breadcrumbs)
