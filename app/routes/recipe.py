@@ -74,13 +74,14 @@ def index():
 @login_required
 def view_recipes():
     page = request.args.get(
-        "page", 10, type=int
+        "page", 1, type=int
     )  # Get the page number from the query string
     search_term = request.args.get("search", "")
 
     if search_term:
         recipes = (
             models.Recipe.query.join(models.Ingredient)
+            .filter(models.Recipe.created_by == current_user.id)
             .filter(
                 models.Recipe.title.contains(search_term)
                 | models.Ingredient.title.contains(search_term)
@@ -89,7 +90,9 @@ def view_recipes():
             .paginate(page=page, per_page=10)
         )
     else:
-        recipes = models.Recipe.query.paginate(page=page, per_page=1, error_out=False)
+        recipes = models.Recipe.query.filter(
+            models.Recipe.created_by == current_user.id
+        ).paginate(page=page, per_page=10, error_out=False)
 
     breadcrumbs = generate_breadcrumbs()
     return render_template(

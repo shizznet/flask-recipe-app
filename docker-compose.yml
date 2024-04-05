@@ -9,6 +9,7 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
   web:
+    container_name: flask-recipe-app
     build:
       context: .
       dockerfile: Dockerfile.dev

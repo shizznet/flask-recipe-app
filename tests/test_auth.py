@@ -81,14 +81,9 @@ def test_registration(test_client):
     )
 
     # Check that the user is redirected to the login page
-    print(response.text)
     assert response.status_code == 200
 
     # Query the database to ensure the user was registered successfully
     user = models.User.query.filter_by(username=new_user_data["username"]).first()
-    all_users = models.User.query.all()
-    print(all_users)
-    for each_user in all_users:
-        print(each_user)
     assert user is not None
     assert user.username == new_user_data["username"]
