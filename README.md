@@ -20,8 +20,8 @@
 ### First Migration
 
 - You need a postgres server up and running with the right credentials. The fastest way is to run the Docker postgres database
-- Run the first migration with `poetry run flask db upgrade` or `docker run --rm -it  poetry run flask db upgrade`
-  - Subsequent migrations after models changes can be run with `poetry run flask db migrate -m "subsequent migrations"`.
+- Run the first migration with `docker exec -it <your-container-name> poetry run flask db upgrade`.
+  - Subsequent migrations after models changes can be run with `docker exec -it <your-container-name> poetry run flask db migrate -m "subsequent migrations"`.
 
 ## Working with Docker
 
